@@ -95,16 +95,21 @@ function App() {
             let lines = text.split('\n');
             let questions = [];
             let question = {};
+            let opRegex= /options/ig;
+            let queRegex = /question/ig
             for (let i = 0; i < lines.length; i++) {
-              if (lines[i].includes("Question")) {
+              if (queRegex.test(lines[i])) {
                 if (Object.keys(question).length !== 0) {
                   questions.push(question);
                   question = {};
                 }
                 question.question = lines[i].trim();
                 question.options = [];
-              } else if (lines[i].includes("Options")) {
+                
+              } else if (opRegex.test(lines[i])) {
+                console.log("lines[i]", lines[i])
                 let options = lines[i].substring(lines[i].indexOf(":") + 1).trim();
+                console.log("options", options)
                 options = options.substring(1, options.length - 1).split("},{");
                 for (let option of options) {
                   let option_values = option.split("|");
