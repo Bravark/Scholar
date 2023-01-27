@@ -4,27 +4,28 @@ import "./App.css";
 function App() {
   // Properties
   const [showResults, setShowResults] = useState(false);
+  const [showPromt, setshowPromt] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [questions, setQuestions] = useState([
-    {
-      question: "Do you Think this tool is Going to Be usefull?",
-      options: [
-        { id: 0, text: "I Dont acutally know", isCorrect: false },
-        { id: 1, text: "Hell Yea!!", isCorrect: false },
-        { id: 2, text: "Let's see first Now", isCorrect: false },
-        { id: 3, text: "Bleh Bleh Bleh", isCorrect: true },
-      ],
-    },
-    {
-      question: "Why do you think AI is Cool?",
-      options: [
-        { id: 0, text: "I Dont acutally know", isCorrect: false },
-        { id: 1, text: "Maybe", isCorrect: false },
-        { id: 2, text: "I Totally Love it", isCorrect: false },
-        { id: 3, text: "Eh Eh Eh Eh", isCorrect: true },
-      ],
-    },
+    // {
+    //   question: "Do you Think this tool is Going to Be usefull?",
+    //   options: [
+    //     { id: 0, text: "I Dont acutally know", isCorrect: false },
+    //     { id: 1, text: "Hell Yea!!", isCorrect: false },
+    //     { id: 2, text: "Let's see first Now", isCorrect: false },
+    //     { id: 3, text: "Bleh Bleh Bleh", isCorrect: true },
+    //   ],
+    // },
+    // {
+    //   question: "Why do you think AI is Cool?",
+    //   options: [
+    //     { id: 0, text: "I Dont acutally know", isCorrect: false },
+    //     { id: 1, text: "Maybe", isCorrect: false },
+    //     { id: 2, text: "I Totally Love it", isCorrect: false },
+    //     { id: 3, text: "Eh Eh Eh Eh", isCorrect: true },
+    //   ],
+    // },
   ]);
 
   //const questions = `{$parsedData}`
@@ -59,6 +60,7 @@ function App() {
     setScore(0);
     setCurrentQuestion(0);
     setShowResults(false);
+    setshowPromt(true);
   };
 
   /*this is to handle submit*/
@@ -136,6 +138,7 @@ function App() {
           console.log(parsedDataArray.type)
           //set the value of the question that will go in to the MCQ
           setQuestions(parsedDataArray) 
+          setshowPromt(false)
           
   
           //typeText(messageDiv, parsedData)
@@ -156,31 +159,30 @@ function App() {
   }
 
   return (
+    
     <div className="App">
       {/* 0. set question */}
+      
       <h1>Scholar Lee</h1>
-      <form onSubmit={e => {handleSubmit(e)}}>
+        {/* . Show the prompt or show the enitire question set  */}
+      {showPromt ? (
+      <><h1>Paste a paragraph of your text and let me ask you questions</h1>
+      <div className="formCont">
+          <form onSubmit={e => { handleSubmit(e); } }>
             <label>Paste Your Text Here</label>
             <br />
-            <input 
-            name='prompt' 
-            type='textarea'
-            onChange={e => setpPompt(e.target.value)}
-            //value={prompt}
-            />
-            <br/>
-            <button type="submit">Submit</button>
-        
-        </form>
+            <textarea className="promtTextarea"
+              name='prompt'
+              //value={this.state.textAreaValue}
+              onChange={e => setpPompt(e.target.value)}
+              rows={10}
+              cols={5} />
+            <br />
+            <button className="but1" type="submit">Submit</button>
 
-
-
-      {/* 1. Header  */}
-      <h1>Paste a paragraph of your text and let me ask you questions</h1>
-
-      {/* 2. Current Score  */}
-      <h2>Mark: {score}</h2>
-
+          </form>
+        </div></>
+        ):(<div>
       {/* 3. Show results or show the question game  */}
       {showResults ? (
         /* 4. Final Results */
@@ -190,18 +192,23 @@ function App() {
             {score} out of {questions.length} correct - (
             {(score / questions.length) * 100}%)
           </h2>
-          <button onClick={() => restartGame()}>Restart game</button>
+          <button className="but2" onClick={() => restartGame()}>Restart game</button>
         </div>
       ) : (
           
         //{questions ? ()}
         /* 5. Question Card  */
         <div className="question-card">
+
           {/* Current Question  */}
-          <h2>
+          <h2 className="q110">
             Question: {currentQuestion + 1} out of {questions.length}
           </h2>
           <h3 className="question-text">{questions[currentQuestion].question}</h3>
+          {/* 2. Current Score  */}
+          <h2 className="q110">Score: {score}</h2>
+
+
 
           {/* List of possible answers  */}
           <ul>
@@ -220,6 +227,8 @@ function App() {
 
         
       )}
+      </div>)}
+      
     </div>
   );
 }
