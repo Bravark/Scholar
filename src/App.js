@@ -180,7 +180,8 @@ function App() {
       {errorMessage && <div className="error">{errorMessage}</div>}
         {/* . Show the prompt or show the enitire question set  */}
       {showPromt ? (
-      <><h1>Paste a paragraph of your text and let me ask you questions</h1>
+      <><h1>Paste a paragraph of your text and let me ask you questions.</h1>
+      <h3>Make sure the paragraph is not too long 7 to 10 lines is ideal.</h3>
       <div className="formCont">
           <form onSubmit={e => { handleSubmit(e); } }>
             <label>Paste Your Text Here</label>
@@ -193,7 +194,7 @@ function App() {
               cols={5} />
             <br />
             <button className="but1" type="submit" disabled={isLoading}>Submit</button>
-            {isLoading ? <Loading /> : ""}
+            {isLoading ? <div>Generating Questions...<Loading /></div> : ""}
 
           </form>
         </div></>
@@ -203,12 +204,12 @@ function App() {
       {showResults ? (
         /* 4. Final Results */
         <div className="final-results">
-          <h1>Final Results</h1>
+          <h1>Final Score</h1>
           <h2>
             {score} out of {questions.length} correct - (
             {(score / questions.length) * 100}%)
           </h2>
-          <button className="but2" onClick={() => restartGame()}>Restart game</button>
+          <button className="but2" onClick={() => restartGame()}>Try another.</button>
         </div>
       ) : (
           
