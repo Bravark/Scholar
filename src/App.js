@@ -194,7 +194,7 @@ function App() {
               cols={5} />
             <br />
             <button className="but1" type="submit" disabled={isLoading}>Submit</button>
-            {isLoading ? <div>Generating Questions...<Loading /></div> : ""}
+            {isLoading ? <div style={{color: 'black'}}>Generating Questions... the longer it takes the more questions you have<Loading /></div> : ""}
 
           </form>
         </div></>
