@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import "./App.css";
+import Loading from "./Loading";
 //import Form from './Form'
 function App() {
   // Properties
   const [showResults, setShowResults] = useState(false);
   const [showPromt, setshowPromt] = useState(true);
+  const [isLoading, setisLoading] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
+  // State to display error message
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [questions, setQuestions] = useState([
     // {
     //   question: "Do you Think this tool is Going to Be usefull?",
@@ -67,6 +72,8 @@ function App() {
   const [prompt, setpPompt] = useState();
 
   const handleSubmit= (e) => {
+    setisLoading(true);
+    console.log(isLoading)
     e.preventDefault();
     // ???
     console.log("the form was submitted")
@@ -77,6 +84,7 @@ function App() {
     
 
     const getans = async () =>{
+      //setisLoading(true);
       const response = await fetch('https://scholar-fom8.onrender.com/', {
           method: 'POST',
           headers: {
@@ -138,14 +146,19 @@ function App() {
           console.log(parsedDataArray.type)
           //set the value of the question that will go in to the MCQ
           setQuestions(parsedDataArray) 
+          setisLoading(false)
           setshowPromt(false)
+          console.log(isLoading)
           
   
           //typeText(messageDiv, parsedData)
       } else {
           const err = await response.text()
+          setErrorMessage("Unable to fetch Questions ");
+          setisLoading(false);
+          console.log(isLoading)
 
-          console.log("Something went wrongg")
+          console.log("Something went wrongg : Unable to fetch Questions")
   
           //messageDiv.innerHTML = "Something went wrongg"
           alert(err)
@@ -164,6 +177,7 @@ function App() {
       {/* 0. set question */}
       
       <h1>Scholar Lee</h1>
+      {errorMessage && <div className="error">{errorMessage}</div>}
         {/* . Show the prompt or show the enitire question set  */}
       {showPromt ? (
       <><h1>Paste a paragraph of your text and let me ask you questions</h1>
@@ -178,12 +192,14 @@ function App() {
               rows={10}
               cols={5} />
             <br />
-            <button className="but1" type="submit">Submit</button>
+            <button className="but1" type="submit" disabled={isLoading}>Submit</button>
+            {isLoading ? <Loading /> : ""}
 
           </form>
         </div></>
         ):(<div>
       {/* 3. Show results or show the question game  */}
+      {isLoading ? <Loading /> : (<div>
       {showResults ? (
         /* 4. Final Results */
         <div className="final-results">
@@ -227,6 +243,7 @@ function App() {
 
         
       )}
+      </div>)}
       </div>)}
       
     </div>
